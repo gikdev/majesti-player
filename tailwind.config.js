@@ -3,20 +3,12 @@ export default {
   content: ["./index.html", "./src/**/*.{js,jsx}"],
   theme: {
     extend: {
-      textColor: {
-        skin: {
-          base: "var(--clr-text-base)",
-          muted: "var(--clr-text-muted)",
-        },
-      },
-      backgroundColor: {
-        skin: {
-          base: "var(--clr-bg-base)",
-          muted: "var(--clr-bg-muted)",
-        },
-      },
       colors: {
         skin: {
+          "text-base": "var(--clr-text-base)",
+          "text-muted": "var(--clr-text-muted)",
+          "bg-base": "var(--clr-bg-base)",
+          "bg-muted": "var(--clr-bg-muted)",
           primary: "var(--clr-primary)",
         },
       },
