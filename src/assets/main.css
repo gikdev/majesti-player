@@ -3,6 +3,22 @@
 @tailwind utilities;
 
 @layer base {
+  @font-face { 
+    font-family: SahelFD; 
+    font-weight: 900; 
+    src: url("/fonts/Sahel-Black-DF.woff2") format("woff2");
+  }
+  @font-face { 
+    font-family: SahelFD; 
+    font-weight: 400; 
+    src: url("/fonts/Sahel-DF.woff2") format("woff2");
+  }
+  html {
+    font-family: SahelFD, sans-serif;
+    font-weight: 400;
+  }
+  h1, h2, h3, h4, h5, h6 { font-weight: 900; }
+
   :root {
     --hue: 200;
     --sat-neu: 20%;
