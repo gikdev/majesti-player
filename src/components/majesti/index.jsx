@@ -1,6 +1,6 @@
+import { IconBtn } from "@/components"
 import { Pause, Play } from "@phosphor-icons/react"
 import { useState } from "react"
-import IconBtn from "../icon-btn.component"
 
 export default function Majesti() {
   const [isPlaying, setIsPlaying] = useState(false)
