@@ -18,6 +18,10 @@
     font-weight: 400;
   }
   h1, h2, h3, h4, h5, h6 { font-weight: 900; }
+  *::selection {
+    background: var(--clr-primary);
+    color: var(--clr-bg-base)
+  }
 
   :root {
     --hue: 200;

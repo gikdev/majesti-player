@@ -15,6 +15,9 @@ import {
   Sun,
 } from "@phosphor-icons/react"
 import { useEffect, useState } from "react"
+import tw from "tailwind-styled-components"
+
+const Player = tw.div`sm:rounded-xl sm:w-[25rem] w-full h-full sm:h-[50rem] flex flex-col p-6 gap-0 justify-between text-skin-text-muted bg-skin-bg-base`
 
 export default function Majesti() {
   const [isThemeDark, setIsThemeDark] = useState(true)
@@ -27,10 +30,7 @@ export default function Majesti() {
   }, [isThemeDark])
 
   return (
-    <div
-      data-theme={isThemeDark ? "dark" : "light"}
-      className="rounded-xl max-w-[25rem] w-full flex flex-col px-6 py-8 gap-12 justify-between text-skin-text-muted bg-skin-bg-base"
-    >
+    <Player data-theme={isThemeDark ? "dark" : "light"}>
       <div className="flex items-center justify-between">
         <IconBtn disabled mirrored Icon={ArrowBendUpLeft} />
         <p>درحال پخش ۱۲ از ۴۵</p>
@@ -47,7 +47,7 @@ export default function Majesti() {
           <p className="text-md">گروه سرود نجم الثاقب</p>
         </div>
       </div>
-      <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-6">
         <div className="flex justify-between">
           <IconBtn disabled Icon={Repeat} />
           <IconBtn
@@ -89,6 +89,6 @@ export default function Majesti() {
           <IconBtn mirrored Icon={SkipForward} />
         </div>
       </div>
-    </div>
+    </Player>
   )
 }
