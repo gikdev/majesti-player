@@ -7,6 +7,7 @@ export default {
         skin: {
           "text-base": "var(--clr-text-base)",
           "text-muted": "var(--clr-text-muted)",
+          "bg-bg": "var(--clr-bg-bg)",
           "bg-base": "var(--clr-bg-base)",
           "bg-muted": "var(--clr-bg-muted)",
           primary: "var(--clr-primary)",
