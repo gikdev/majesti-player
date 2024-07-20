@@ -1,4 +1,7 @@
 import { IconBtn } from "@/components"
+import { MUSICS } from "@/data"
+import { useMusicPlayer, useTogglable } from "@/hooks"
+import { persianifyNumbers, secondsTo24HourFormat } from "@/utils"
 import {
   ArrowBendUpLeft,
   DotsThreeOutlineVertical,
@@ -20,42 +23,54 @@ import tw from "tailwind-styled-components"
 const Player = tw.div`sm:rounded-xl sm:w-[25rem] w-full h-full sm:h-[50rem] flex flex-col p-6 gap-0 justify-between text-skin-text-muted bg-skin-bg-base`
 
 export default function Majesti() {
-  const [isThemeDark, setIsThemeDark] = useState(true)
-  const [isPlaying, setIsPlaying] = useState(false)
+  const [currentlyPlaying, setCurrentlyPlaying] = useState(0)
+  const [isThemeDark, toggleIsThemeDark] = useTogglable(true)
+  const [isPlaying, toggleIsPlaying] = useTogglable()
+  const [isLiked, toggleIsLiked] = useTogglable()
   const [range, setRange] = useState(0)
-  const [isLiked, setIsLiked] = useState(false)
+  const numOfAllMusics = MUSICS.length
+  const currentMusic = MUSICS[currentlyPlaying]
+  const { toggle, audioRef, currentTime, setTime } = useMusicPlayer(currentMusic.audioURL)
 
   useEffect(() => {
     document.querySelector("html").setAttribute("data-theme", isThemeDark ? "dark" : "light")
   }, [isThemeDark])
 
+  useEffect(() => {
+    setRange(currentTime / audioRef.current.duration * 100)
+  }, [currentTime, audioRef.current])
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    setTime(range) 
+  }, [range])
+
   return (
     <Player data-theme={isThemeDark ? "dark" : "light"}>
       <div className="flex items-center justify-between">
         <IconBtn disabled mirrored Icon={ArrowBendUpLeft} />
-        <p>درحال پخش ۱۲ از ۴۵</p>
+        <p>
+          درحال پخش {persianifyNumbers(currentlyPlaying + 1)} از {numOfAllMusics}
+        </p>
         <IconBtn disabled mirrored Icon={DotsThreeOutlineVertical} />
       </div>
       <div className="flex flex-col items-center gap-4">
         <img
           className="w-[19rem] rounded-[2rem] aspect-square"
-          src="https://cdnimg.kashoob.com/5yOtBcBz9UTRHe6Yqgi_LIxO4F1aGaCxUU985_0Gcoc/fill/200/200/sm/1/bG9jYWw6Ly8vc3RvcmFnZS9pbWFnZS8yMDIzMDcvMTY4ODMxNDg5MzAwOTc2Njc0MTQ4MzIuanBn.webp"
-          alt="گروه سرود نجم الثاقب و مردم در حال دست زدن"
+          src={currentMusic.imageURL}
+          alt="عکس بنر مداحی"
         />
         <div className="flex flex-col items-center gap-2">
-          <h2 className="text-3xl text-skin-text-base">سرود جانم علی</h2>
-          <p className="text-md">گروه سرود نجم الثاقب</p>
+          <h2 className="text-3xl text-skin-text-base">{currentMusic.name}</h2>
+          <p className="text-md">{currentMusic.singer}</p>
         </div>
       </div>
       <div className="flex flex-col gap-6">
         <div className="flex justify-between">
           <IconBtn disabled Icon={Repeat} />
+          <IconBtn Icon={isThemeDark ? Sun : Moon} clickHandler={toggleIsThemeDark} />
           <IconBtn
-            Icon={isThemeDark ? Sun : Moon}
-            clickHandler={() => setIsThemeDark(prev => !prev)}
-          />
-          <IconBtn
-            clickHandler={() => setIsLiked(prev => !prev)}
+            clickHandler={toggleIsLiked}
             color={isLiked ? "var(--clr-primary)" : "currentColor"}
             Icon={Heart}
             weight={isLiked ? "fill" : "regular"}
@@ -64,7 +79,7 @@ export default function Majesti() {
         </div>
         <div className="flex flex-col gap-1">
           <input
-            style={{ "--range-value": `${range}%` }}
+            style={{ "--range-value": `${range + 1}%` }}
             type="range"
             min={0}
             max={100}
@@ -73,15 +88,18 @@ export default function Majesti() {
             className="range w-full"
           />
           <div className="flex justify-between items-center">
-            <span>00:00:12</span>
-            <span>01:32:43</span>
+            <span>{persianifyNumbers(secondsTo24HourFormat(currentTime))}</span>
+            <span>{persianifyNumbers(secondsTo24HourFormat(audioRef.current.duration))}</span>
           </div>
         </div>
         <div className="flex justify-between items-center">
           <IconBtn mirrored Icon={SkipBack} />
           <IconBtn mirrored Icon={Rewind} />
           <IconBtn
-            clickHandler={() => setIsPlaying(prev => !prev)}
+            clickHandler={() => {
+              toggleIsPlaying()
+              toggle()
+            }}
             Icon={isPlaying ? Pause : Play}
             isSpecial
           />

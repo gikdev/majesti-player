@@ -2,8 +2,8 @@
 function persianifyNumbers(input) {
   const isNumber = typeof input === "number"
   const isString = typeof input === "string"
-  const isEmptyString = !input.length
-  if (isEmptyString || (!isNumber && !isString)) return null
+  const isEmptyStr = typeof input === "string" && !input.length
+  if (isEmptyStr || (!isNumber && !isString)) return null
 
   return input
     .toString()
@@ -31,10 +31,10 @@ function secondsTo24HourFormat(seconds) {
   const AN_HOUR_IN_SECONDS = 60 * 60
 
   const h = Math.floor(seconds / AN_HOUR_IN_SECONDS)
-  const m = Math.floor((seconds - (h * AN_HOUR_IN_SECONDS)) / A_MINUTE_IN_SECONDS)
-  const s = Math.floor((seconds - (m * A_MINUTE_IN_SECONDS) - (h * AN_HOUR_IN_SECONDS)))
+  const m = Math.floor((seconds - h * AN_HOUR_IN_SECONDS) / A_MINUTE_IN_SECONDS)
+  const s = Math.floor(seconds - m * A_MINUTE_IN_SECONDS - h * AN_HOUR_IN_SECONDS)
 
-  const zerofy = i => i < 10 ? `0${i}` : i
+  const zerofy = i => (i < 10 ? `0${i}` : i)
 
   return `${zerofy(h)}:${zerofy(m)}:${zerofy(s)}`
 }
